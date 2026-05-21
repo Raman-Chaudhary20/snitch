@@ -1,17 +1,9 @@
-import { useState } from 'react'
-import './app.css'
+import "./app.css";
+import { RouterProvider } from "react-router";
+import { routes } from "./app.routes";
 
 function App() {
-  return (
-    <>
-      <div>
-        <h1>Snitch</h1>
-      </div>
-      <div>
-        <p>Get the latest news and updates</p>
-      </div>
-    </>
-  )
+  return <RouterProvider router={routes} />;
 }
 
-export default App
+export default App;
