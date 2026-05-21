@@ -1,14 +1,12 @@
 import { body, validationResult } from "express-validator";
 
-
-function validationRequest (req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    next();
+function validationRequest(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
 }
-
 
 export const validateRegister = [
   body("email").isEmail().withMessage("Invalid email format"),
@@ -31,9 +29,16 @@ export const validateRegister = [
     .isIn(["buyer", "seller"])
     .withMessage("Role must be either 'buyer' or 'seller'"),
 
-  body("isSeller")
-    .isBoolean()
-    .withMessage("isSeller must be a boolean value"),
+  validationRequest,
+];
 
-  validationRequest
+export const validateLogin = [
+  body("email").isEmail().withMessage("Invalid email format"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+  body("role")
+    .isIn(["buyer", "seller"])
+    .withMessage("Role must be either 'buyer' or 'seller'"),
+  validationRequest,
 ];

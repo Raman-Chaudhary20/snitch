@@ -37,7 +37,7 @@ export const registerController = async (req, res) =>{
             password,
             fullname,
             contact,
-            role: isSeller ? "seller" : "buyer",
+            role
         });
 
         await newUser.save();
@@ -46,4 +46,22 @@ export const registerController = async (req, res) =>{
         return res.status(500).json({ message: "Internal server error" });
     }
 
+};
+
+export const loginController = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        } 
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid credentials" });
+        }
+        await sendTokenResponse(user, res);
+    } catch (error) {
+        return res.status(500).json({ message: "Internal server error" });
+    }
 }
