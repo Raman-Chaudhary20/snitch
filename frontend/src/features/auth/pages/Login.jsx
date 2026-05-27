@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 const Login = () => {
   const { handleLogin } = useAuth();
@@ -153,7 +155,7 @@ const Login = () => {
       </header>
 
       {/* Main Canvas */}
-      <main className="flex-grow flex items-center justify-center pt-28 pb-16 px-6">
+      <main className="grow flex items-center justify-center pt-28 pb-16 px-6">
         <div className="w-full max-w-xl animate-in fade-in slide-in-from-bottom-6 duration-700">
           {/* Header */}
           <div className="text-center mb-8">
@@ -283,12 +285,14 @@ const Login = () => {
                 </span>
               </label>
 
+
+
               {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary-dark text-neutral-950 font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm cursor-pointer"
-              >
+                className="w-full mt-5 bg-primary hover:bg-primary-dark text-neutral-950 font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm cursor-pointer"
+                >
                 {loading ? (
                   <>
                     <svg
@@ -296,7 +300,7 @@ const Login = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                    >
+                      >
                       <circle
                         className="opacity-25"
                         cx="12"
@@ -304,12 +308,12 @@ const Login = () => {
                         r="10"
                         stroke="currentColor"
                         strokeWidth="4"
-                      ></circle>
+                        ></circle>
                       <path
                         className="opacity-75"
                         fill="currentColor"
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
+                        ></path>
                     </svg>
                     <span>Logging In...</span>
                   </>
@@ -322,24 +326,26 @@ const Login = () => {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth="2.5"
-                    >
+                      >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
+                        />
                     </svg>
                   </>
                 )}
               </button>
+                {/* Continue with Google */}
+                <ContinueWithGoogle />
             </form>
 
             <div className="mt-8 text-center border-t border-neutral-200 dark:border-neutral-900/60 pt-6">
               <p className="text-xs text-neutral-500 font-body">
                 Don't have an account?
-                <a className="text-primary hover:text-primary-dark font-bold ml-1.5 transition-colors cursor-pointer select-none">
+                <Link to="/register" className="text-primary hover:text-primary-dark font-bold ml-1.5 transition-colors cursor-pointer select-none">
                   Sign Up
-                </a>
+                </Link>
               </p>
             </div>
           </div>

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router'
+import ContinueWithGoogle from '../components/ContinueWithGoogle'
 
 const Register = () => {
   const { handleRegister } = useAuth();
@@ -32,16 +34,13 @@ const Register = () => {
     }
   }, [darkMode]);
 
-  const [role, setRole] = useState("buyer");
-  if(role.type === "checkbox" && role.checked){
-    setRole("seller");
-  }
+ 
   const [form, setForm] = useState({
     fullname: '',
     email: '',
     contact: '',
     password: '',
-    role: role,
+    role: 'buyer',
   });
 
   const [validationError, setValidationError] = useState('');
@@ -51,10 +50,13 @@ const Register = () => {
     const { name, value, type, checked } = e.target;
     setForm(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked ? "seller" : "buyer" : value
     }));
+       
+    
     // Clear validation error on change
     if (validationError) setValidationError('');
+    
   };
 
   const handleSubmit = async (e) => {
@@ -79,6 +81,7 @@ const Register = () => {
     }
 
     try {
+      
       await handleRegister(form);
       setSuccess(true);
       setTimeout(() => {
@@ -88,6 +91,7 @@ const Register = () => {
       // Error handled by redux slice/hook
     }
   };
+  
 
   if (success || user) {
     return (
@@ -143,7 +147,7 @@ const Register = () => {
       </header>
 
       {/* Main Canvas */}
-      <main className="flex-grow flex items-center justify-center pt-28 pb-16 px-6">
+      <main className="grow flex items-center justify-center pt-28 pb-16 px-6">
         <div className="w-full max-w-xl animate-in fade-in slide-in-from-bottom-6 duration-700">
           
           {/* Header */}
@@ -260,12 +264,13 @@ const Register = () => {
                     id="role"
                     name="role"
                     type="checkbox"
-                    checked={role === "seller"}
-                    onChange={(e) => setRole(e.target.checked ? "seller" : "buyer")}
+                    checked={form.role === "seller"}
+                    onChange={handleChange}
+                    // onChange={(e) => setRole(e.target.checked ? "seller" : "buyer")}
                     className="peer hidden"
                   />
                   <div className="w-5.5 h-5.5 border border-neutral-300 dark:border-neutral-800 rounded peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center bg-white dark:bg-neutral-950/20 group-hover:border-neutral-400 dark:group-hover:border-neutral-600">
-                    <svg className={`w-3.5 h-3.5 text-neutral-950 transition-transform ${role === "seller" ? 'scale-100' : 'scale-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
+                    <svg className={`w-3.5 h-3.5 text-neutral-950 transition-transform ${form.role === "seller" ? 'scale-100' : 'scale-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
@@ -279,7 +284,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary-dark text-neutral-950 font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm cursor-pointer"
+                className="w-full mt-5 bg-primary hover:bg-primary-dark text-neutral-950 font-bold py-3.5 px-4 rounded-lg shadow-lg shadow-primary/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed select-none text-sm cursor-pointer"
               >
                 {loading ? (
                   <>
@@ -298,15 +303,17 @@ const Register = () => {
                   </>
                 )}
               </button>
+                 {/* Continue with Google */}
+                <ContinueWithGoogle />
 
             </form>
 
             <div className="mt-8 text-center border-t border-neutral-200 dark:border-neutral-900/60 pt-6">
               <p className="text-xs text-neutral-500 font-body">
                 Already have an account? 
-                <a className="text-primary hover:text-primary-dark font-bold ml-1.5 transition-colors cursor-pointer select-none">
+                <Link to="/login" className="text-primary hover:text-primary-dark font-bold ml-1.5 transition-colors cursor-pointer select-none">
                   Sign In
-                </a>
+                </Link>
               </p>
             </div>
 
