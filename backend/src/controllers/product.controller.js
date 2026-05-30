@@ -2,13 +2,10 @@ import productModel from "../models/product.model.js";
 import { uploadFile } from "../services/storage.service.js";
 
 export async function createProductController(req, res) {
-  const { title, description, images, priceAmount, priceCurrency } = req.body;
-  console.log(req.body);
-  console.log(req.user);
+  const { title, description, priceAmount, priceCurrency } = req.body;
 
   const seller = req.user;
 
-  try {
     const images = await Promise.all(
       req.files.map(async (file) => {
         return await uploadFile({
@@ -17,14 +14,7 @@ export async function createProductController(req, res) {
         });
       }),
     );
-  } catch (error) {
-    console.log("IMAGEKIT ERROR:");
-    console.log(error);
-    console.log(error.message);
-    console.log(error.response?.data);
-
-    throw error;
-  }
+ 
 
   const product = await productModel.create({
     title,
@@ -36,7 +26,6 @@ export async function createProductController(req, res) {
     images,
     seller: seller._id,
   });
-  console.log(product);
 
 
   res.status(201).json({

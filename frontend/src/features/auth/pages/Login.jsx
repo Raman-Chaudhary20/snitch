@@ -74,13 +74,18 @@ const Login = () => {
     }
 
     try {
-        console.log(form);
         
-      await handleLogin(form);
+      const user =await handleLogin(form);
       setSuccess(true);
+      if(user.role === "buyer"){
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 3000);}
+      else if(user.role === "seller"){
+        setTimeout(() => {
+          navigate("/seller/allProducts");
+        }, 3000);
+      }
     } catch (err) {
       // Error handled by redux slice/hook
     }

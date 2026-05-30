@@ -145,19 +145,16 @@ const CreateProduct = () => {
         data.append("priceAmount", priceAmount.trim());
         data.append("priceCurrency", priceCurrency);
 
-        images.forEach((file) => {
-            data.append("images", file);
+        images.forEach((img) => {            
+            data.append("images", img);
         });
-
-        console.log(title, description, priceAmount, priceCurrency, images);
 
 
         try {
             setSuccess(true);
-            console.log(data);
             await handleCreateProduct(data);
             setTimeout(() => {
-                navigate("/");
+                navigate("/seller/getProducts");
             }, 3000);
         } catch (err) {
             // API errors are handled by redux slice & displayed via the `error` state selector
